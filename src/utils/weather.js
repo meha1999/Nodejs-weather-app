@@ -1,23 +1,25 @@
 const request = require("postman-request");
 
-const weather = (lat, lon,callback) => {
-  const url =
-    "http://api.weatherstack.com/current";
+const weather = (lat, lon, callback) => {
+  const url = "http://api.weatherstack.com/current";
 
   const queryString = {
     access_key: "768ee1b476739c5afc1649ffe0922b8e",
     query: `${lat},${lon}`,
   };
 
-  request(url, { json: true, qs: queryString },(error, { body }) => {
+  request(url, { json: true, qs: queryString }, (error, { body }) => {
     if (error) {
-        callback('Unable to connect to weather service!', undefined)
+      callback("Unable to connect to weather service!", undefined);
     } else if (body.error) {
-        callback('Unable to find location', undefined)
+      callback("Unable to find location", undefined);
     } else {
-        callback(undefined, ' It is currently ' + body.current.temperature + ' degress out. And it feels like ' + body.current.feelslike + ' degress.')
+      callback(
+        undefined,
+        ` It is ${body.current.weather_descriptions[0]} now. And the temperature is currently  ${body.current.temperature} degress out. And it feels like  ${body.current.feelslike} degress. And the Humidity is ${body.current.humidity}%`
+      );
     }
-});
+  });
 };
 
-module.exports=weather
+module.exports = weather;
